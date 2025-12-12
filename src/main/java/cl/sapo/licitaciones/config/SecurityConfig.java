@@ -77,10 +77,11 @@ public class SecurityConfig {
                         .allowedMethods("GET", "HEAD")
                         .maxAge(3600);
                 
-                // Restrict other endpoints
+                // Allow sync endpoint from same origin
                 registry.addMapping("/sync")
-                        .allowedOrigins("http://localhost:8080", "https://yourdomain.com")
+                        .allowedOriginPatterns("*") // Allow any origin for same-site requests
                         .allowedMethods("POST")
+                        .allowCredentials(true)
                         .maxAge(3600);
             }
         };
