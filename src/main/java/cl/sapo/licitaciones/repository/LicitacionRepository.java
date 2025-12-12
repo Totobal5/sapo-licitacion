@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Repository for Licitacion entity.
@@ -23,6 +24,11 @@ public interface LicitacionRepository extends JpaRepository<Licitacion, String>,
      * Find tenders by region (case insensitive).
      */
     List<Licitacion> findByRegionIgnoreCase(String region);
+    
+    /**
+     * Find a tender by external code.
+     */
+    Optional<Licitacion> findByCodigoExterno(String codigoExterno);
 
     /**
      * Check if a tender exists by external code.

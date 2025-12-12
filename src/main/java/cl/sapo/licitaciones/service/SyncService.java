@@ -92,45 +92,95 @@ public class SyncService {
 
             log.info("Fetched {} tenders from API", response.cantidad());
 
-            // Fetch detailed data for each tender (with delay to avoid rate limiting)
-            List<LicitacionDTO> detailedTenders = new java.util.ArrayList<>();
-            List<LicitacionDTO> basicList = response.listado().stream()
+            // PHASE 1: Quick save with basic data
+            List<LicitacionDTO> validBasicTenders = response.listado().stream()
                     .filter(this::isValidTender)
                     .collect(Collectors.toList());
 
-            log.info("Fetching detailed data for {} valid tenders (this will take ~{} seconds)...", 
-                    basicList.size(), basicList.size() * 3);
+            log.info("PHASE 1: Saving {} tenders with basic information (fast)", validBasicTenders.size());
+            int savedCount = processAndSaveTenders(response.listado(), validBasicTenders);
+            log.info("PHASE 1 completed: {} tenders now visible in UI", savedCount);
 
-            for (int i = 0; i < basicList.size(); i++) {
-                LicitacionDTO dto = basicList.get(i);
-                log.debug("Fetching detail {}/{}: {}", i + 1, basicList.size(), dto.codigoExterno());
-                
-                LicitacionDTO detail = fetchTenderDetail(dto.codigoExterno());
-                if (detail != null) {
-                    detailedTenders.add(detail);
-                }
-                
-                // Wait 3 seconds between requests to avoid rate limiting
-                if (i < basicList.size() - 1) {
-                    try {
-                        Thread.sleep(3000);
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                        log.warn("Sleep interrupted during API calls");
-                        break;
-                    }
-                }
-            }
-
-            log.info("Fetched detailed data for {} valid tenders", detailedTenders.size());
-
-            // Process tenders: upsert valid ones and delete inactive ones
-            int savedCount = processAndSaveTenders(response.listado(), detailedTenders);
-            log.info("Synchronization completed. Processed {} tenders", savedCount);
+            // PHASE 2: Enrich with detailed data in background (async)
+            log.info("PHASE 2: Starting background enrichment for {} tenders (will take ~{} seconds)...", 
+                    validBasicTenders.size(), validBasicTenders.size() * 3);
+            
+            enrichTendersInBackground(validBasicTenders);
 
         } catch (Exception e) {
             log.error("Error during tender synchronization", e);
         }
+    }
+    
+    /**
+     * Enriches tenders with detailed information in background.
+     * This runs asynchronously so it doesn't block the main sync.
+     */
+    @Async
+    public void enrichTendersInBackground(List<LicitacionDTO> basicTenders) {
+        log.info("Background enrichment started for {} tenders", basicTenders.size());
+        
+        int enrichedCount = 0;
+        for (int i = 0; i < basicTenders.size(); i++) {
+            LicitacionDTO basicDto = basicTenders.get(i);
+            
+            try {
+                log.debug("Enriching tender {}/{}: {}", i + 1, basicTenders.size(), basicDto.codigoExterno());
+                
+                LicitacionDTO detailedDto = fetchTenderDetail(basicDto.codigoExterno());
+                if (detailedDto != null) {
+                    // Update existing tender with detailed information
+                    updateTenderWithDetails(basicDto.codigoExterno(), detailedDto);
+                    enrichedCount++;
+                    
+                    if ((i + 1) % 50 == 0) {
+                        log.info("Background enrichment progress: {}/{} tenders completed", i + 1, basicTenders.size());
+                    }
+                }
+                
+                // Wait 3 seconds between requests to avoid rate limiting
+                if (i < basicTenders.size() - 1) {
+                    Thread.sleep(3000);
+                }
+                
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                log.warn("Background enrichment interrupted at tender {}/{}", i + 1, basicTenders.size());
+                break;
+            } catch (Exception e) {
+                log.error("Error enriching tender {}: {}", basicDto.codigoExterno(), e.getMessage());
+            }
+        }
+        
+        log.info("Background enrichment completed: {}/{} tenders enriched", enrichedCount, basicTenders.size());
+    }
+    
+    /**
+     * Updates an existing tender with detailed information.
+     */
+    @Transactional
+    public void updateTenderWithDetails(String codigoExterno, LicitacionDTO detailedDto) {
+        licitacionRepository.findByCodigoExterno(codigoExterno).ifPresent(licitacion -> {
+            // Update with detailed information (keep existing basic data)
+            if (detailedDto.comprador() != null) {
+                licitacion.setNombreOrganismo(detailedDto.comprador().nombreOrganismo());
+                licitacion.setRegionOrganismo(detailedDto.comprador().regionUnidad());
+            }
+            
+            if (detailedDto.descripcion() != null && !detailedDto.descripcion().isBlank()) {
+                licitacion.setDescripcion(detailedDto.descripcion());
+            }
+            
+            if (detailedDto.items() != null && detailedDto.items().listado() != null) {
+                licitacion.setItems(
+                    detailedDto.items().listado().stream()
+                        .map(this::convertToItemEntity)
+                        .collect(Collectors.toList())
+                );
+            }
+            
+            licitacionRepository.save(licitacion);
+        });
     }
 
     /**
