@@ -130,22 +130,25 @@ public class SyncService {
         log.info("Background enrichment started for {} tenders", basicTenders.size());
         
         int enrichedCount = 0;
+        int errorCount = 0;
         for (int i = 0; i < basicTenders.size(); i++) {
             LicitacionDTO basicDto = basicTenders.get(i);
             
             try {
-                log.debug("Enriching tender {}/{}: {}", i + 1, basicTenders.size(), basicDto.codigoExterno());
-                
                 LicitacionDTO detailedDto = fetchTenderDetail(basicDto.codigoExterno());
                 if (detailedDto != null) {
                     // Update existing tender with detailed information
                     // Use self-injection to ensure @Transactional proxy is invoked
                     self.updateTenderWithDetails(basicDto.codigoExterno(), detailedDto);
                     enrichedCount++;
-                    
-                    if ((i + 1) % 50 == 0) {
-                        log.info("Background enrichment progress: {}/{} tenders completed", i + 1, basicTenders.size());
-                    }
+                } else {
+                    errorCount++;
+                }
+                
+                // Log progress every 50 tenders OR every 10 minutes (whichever comes first)
+                if ((i + 1) % 50 == 0) {
+                    log.info("Background enrichment progress: {}/{} tenders processed ({} enriched, {} errors)", 
+                            i + 1, basicTenders.size(), enrichedCount, errorCount);
                 }
                 
                 // Wait 3 seconds between requests to avoid rate limiting
@@ -159,10 +162,12 @@ public class SyncService {
                 break;
             } catch (Exception e) {
                 log.error("Error enriching tender {}: {}", basicDto.codigoExterno(), e.getMessage());
+                errorCount++;
             }
         }
         
-        log.info("Background enrichment completed: {}/{} tenders enriched", enrichedCount, basicTenders.size());
+        log.info("Background enrichment completed: {}/{} tenders enriched successfully, {} errors", 
+                enrichedCount, basicTenders.size(), errorCount);
     }
     
     /**
