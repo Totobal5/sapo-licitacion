@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 /**
  * Global exception handler to prevent stack trace exposure.
@@ -17,6 +18,28 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 @ControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
+
+    /**
+     * Handles missing static resources (like favicon.ico) silently.
+     */
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ModelAndView handleNoResourceFound(NoResourceFoundException ex, HttpServletRequest request) {
+        // Silently ignore missing favicon and other static resources
+        if (request.getRequestURI().endsWith(".ico")) {
+            return null; // Return null to suppress the error
+        }
+        
+        log.warn("Static resource not found: {}", request.getRequestURI());
+        
+        ModelAndView mav = new ModelAndView("error");
+        mav.addObject("errorCode", "404");
+        mav.addObject("errorTitle", "Recurso No Encontrado");
+        mav.addObject("errorMessage", "El recurso solicitado no existe.");
+        mav.addObject("showDetails", false);
+        mav.setStatus(HttpStatus.NOT_FOUND);
+        
+        return mav;
+    }
 
     /**
      * Handles generic unexpected exceptions.

@@ -1,12 +1,7 @@
 version: '3.8'
 
-# Production-ready Docker Compose configuration
-# Compatible with x86_64 and ARM64 architectures (Raspberry Pi, Orange Pi, etc.)
-
 services:
-  # ============================================
   # PostgreSQL Database
-  # ============================================
   db:
     image: postgres:16-alpine
     container_name: licitaciones-db
@@ -48,9 +43,7 @@ services:
           cpus: '0.5'
           memory: 256M
 
-  # ============================================
   # Spring Boot Application
-  # ============================================
   app:
     build:
       context: .
@@ -101,17 +94,6 @@ services:
       timeout: 10s
       retries: 3
       start_period: 60s
-    
-    # Resource limits (adjust based on your server specs)
-    deploy:
-      resources:
-        limits:
-          cpus: '2.0'
-          memory: 768M
-        reservations:
-          cpus: '1.0'
-          memory: 512M
-    
     # Optional: Persist application logs
     volumes:
       - app_logs:/app/logs
