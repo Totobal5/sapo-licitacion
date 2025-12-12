@@ -1,5 +1,5 @@
-# Licitaciones Sapo
-
+# Licitaciones Sapo 🐸
+ 
 A monitoring system for Chilean public tenders from MercadoPublico.cl. Fetches, stores, and serves tender data through a web interface and RSS feed.
 
 ## The Problem
