@@ -158,10 +158,12 @@ public class SyncService {
     
     /**
      * Updates an existing tender with detailed information.
+     * Uses REQUIRES_NEW to ensure independent transaction in async context.
      */
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void updateTenderWithDetails(String codigoExterno, LicitacionDTO detailedDto) {
-        licitacionRepository.findByCodigoExterno(codigoExterno).ifPresent(licitacion -> {
+        // Fetch with items eagerly loaded to avoid LazyInitializationException
+        licitacionRepository.findByCodigoExternoWithItems(codigoExterno).ifPresent(licitacion -> {
             // Update with detailed information (keep existing basic data)
             if (detailedDto.comprador() != null) {
                 licitacion.setBuyerName(detailedDto.comprador().nombreUnidad());
@@ -174,10 +176,8 @@ public class SyncService {
             }
             
             if (detailedDto.items() != null && detailedDto.items().listado() != null) {
-                // Force initialization of items collection in this transaction
-                List<ItemLicitacion> currentItems = licitacion.getItems();
-                currentItems.size(); // Force lazy load
-                currentItems.clear();
+                // Clear existing items (already loaded in this transaction)
+                licitacion.getItems().clear();
                 
                 // Add new items
                 detailedDto.items().listado().stream()

@@ -29,6 +29,12 @@ public interface LicitacionRepository extends JpaRepository<Licitacion, String>,
      * Find a tender by external code.
      */
     Optional<Licitacion> findByCodigoExterno(String codigoExterno);
+    
+    /**
+     * Find a tender by external code with items eagerly loaded.
+     */
+    @Query("SELECT l FROM Licitacion l LEFT JOIN FETCH l.items WHERE l.codigoExterno = :codigoExterno")
+    Optional<Licitacion> findByCodigoExternoWithItems(String codigoExterno);
 
     /**
      * Check if a tender exists by external code.
