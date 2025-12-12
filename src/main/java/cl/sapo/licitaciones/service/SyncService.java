@@ -7,7 +7,6 @@ import cl.sapo.licitaciones.entity.ItemLicitacion;
 import cl.sapo.licitaciones.entity.Licitacion;
 import cl.sapo.licitaciones.repository.LicitacionRepository;
 import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
@@ -30,7 +29,6 @@ import java.util.stream.Collectors;
  * Runs every hour to fetch and persist new tenders.
  */
 @Service
-@RequiredArgsConstructor
 @Slf4j
 public class SyncService {
 
@@ -40,8 +38,17 @@ public class SyncService {
 
     private final RestClient mercadoPublicoRestClient;
     private final LicitacionRepository licitacionRepository;
+    private final SyncService self; // Self-injection for @Transactional to work in @Async
     
     private volatile boolean syncInProgress = false;
+    
+    public SyncService(RestClient mercadoPublicoRestClient, 
+                      LicitacionRepository licitacionRepository,
+                      SyncService self) {
+        this.mercadoPublicoRestClient = mercadoPublicoRestClient;
+        this.licitacionRepository = licitacionRepository;
+        this.self = self;
+    }
 
     @Value("${mercadopublico.api.ticket}")
     private String apiTicket;
@@ -131,7 +138,8 @@ public class SyncService {
                 LicitacionDTO detailedDto = fetchTenderDetail(basicDto.codigoExterno());
                 if (detailedDto != null) {
                     // Update existing tender with detailed information
-                    updateTenderWithDetails(basicDto.codigoExterno(), detailedDto);
+                    // Use self-injection to ensure @Transactional proxy is invoked
+                    self.updateTenderWithDetails(basicDto.codigoExterno(), detailedDto);
                     enrichedCount++;
                     
                     if ((i + 1) % 50 == 0) {
