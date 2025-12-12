@@ -37,6 +37,9 @@ WORKDIR /app
 # Copy JAR from builder stage
 COPY --from=builder /build/target/*.jar app.jar
 
+# Create logs directory
+RUN mkdir -p /app/logs
+
 # Change ownership to non-root user
 RUN chown -R spring:spring /app
 
