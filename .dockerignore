@@ -1,0 +1,74 @@
+# Docker ignore file
+# Files and directories to exclude from Docker build context
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+*.md
+docs/
+ARCHITECTURE.md
+DEPLOYMENT.md
+PROJECT_SUMMARY.md
+USAGE.md
+VERIFICATION.md
+COMMANDS.md
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+.settings/
+.classpath
+.project
+.metadata
+
+# Build artifacts
+target/
+build/
+dist/
+out/
+*.class
+
+# Logs
+logs/
+*.log
+*.log.*
+
+# Database
+*.db
+*.sql
+
+# Environment files
+.env
+.env.*
+!.env.example
+application-local.properties
+
+# Docker
+docker-compose.override.yml
+*.dockerfile
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Maven
+.mvn/wrapper/maven-wrapper.jar
+.m2/
+
+# Test files
+src/test/
+*Test.java
+
+# Backup files
+*.bak
+*.tmp
+*.backup

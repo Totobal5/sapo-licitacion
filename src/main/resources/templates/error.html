@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error - Sapo Licitacion</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .error-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .error-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .error-header h1 {
+            font-size: 4em;
+            margin-bottom: 10px;
+        }
+
+        .error-header p {
+            font-size: 1.3em;
+            opacity: 0.9;
+        }
+
+        .error-body {
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .error-icon {
+            font-size: 5em;
+            margin-bottom: 20px;
+        }
+
+        .error-message {
+            font-size: 1.1em;
+            color: #495057;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .error-details {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: left;
+            border-radius: 5px;
+            font-size: 0.95em;
+            color: #6c757d;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .footer-text {
+            margin-top: 30px;
+            font-size: 0.9em;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-header">
+            <h1 th:text="${errorCode ?: '500'}">500</h1>
+            <p th:text="${errorTitle ?: 'Error del Servidor'}">Error del Servidor</p>
+        </div>
+
+        <div class="error-body">
+            <div class="error-icon">
+                <span th:if="${errorCode == '404'}">🔍</span>
+                <span th:if="${errorCode == '403'}">🔒</span>
+                <span th:if="${errorCode == '400'}">⚠️</span>
+                <span th:if="${errorCode == '500'}">💥</span>
+                <span th:if="${errorCode == '503'}">🔧</span>
+                <span th:unless="${errorCode == '404' or errorCode == '403' or errorCode == '400' or errorCode == '500' or errorCode == '503'}">❌</span>
+            </div>
+
+            <div class="error-message">
+                <p th:text="${errorMessage ?: 'Ha ocurrido un error inesperado. Por favor, intente más tarde.'}">
+                    Ha ocurrido un error inesperado.
+                </p>
+            </div>
+
+            <div class="error-details" th:if="${showDetails != null and showDetails and errorMessage != null}">
+                <strong>Detalles:</strong><br/>
+                <span th:text="${errorMessage}"></span>
+            </div>
+
+            <a href="/" class="btn">🏠 Volver al Inicio</a>
+
+            <p class="footer-text">
+                Si el problema persiste, por favor contacte al administrador del sistema.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

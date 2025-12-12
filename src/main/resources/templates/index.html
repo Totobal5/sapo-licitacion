@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sapo Licitacion - Licitaciones Chile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        header .logo {
+            font-size: 3em;
+            margin-bottom: 5px;
+        }
+
+        .search-section {
+            padding: 30px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: flex-end;
+        }
+
+        .form-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #dee2e6;
+            border-radius: 5px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .actions-bar {
+            padding: 20px 30px;
+            background: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .stats {
+            font-size: 1.1em;
+            color: #495057;
+        }
+
+        .stats strong {
+            color: #667eea;
+            font-size: 1.3em;
+        }
+
+        .rss-section {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .rss-input {
+            padding: 10px;
+            border: 2px solid #dee2e6;
+            border-radius: 5px;
+            font-family: monospace;
+            min-width: 300px;
+            background: #f8f9fa;
+        }
+
+        .alert {
+            padding: 15px 30px;
+            margin: 0;
+            border-left: 5px solid;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+
+        .table-container {
+            padding: 30px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #495057;
+            border-bottom: 2px solid #dee2e6;
+            position: sticky;
+            top: 0;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .tender-code {
+            font-family: monospace;
+            background: #e9ecef;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+
+        .tender-title {
+            font-weight: 600;
+            color: #212529;
+            margin-bottom: 5px;
+        }
+
+        .tender-desc {
+            color: #6c757d;
+            font-size: 0.9em;
+            max-width: 400px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .badge-region {
+            background: #667eea;
+            color: white;
+        }
+
+        .badge-items {
+            background: #28a745;
+            color: white;
+        }
+
+        .date {
+            color: #495057;
+            font-size: 0.95em;
+        }
+
+        .external-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .external-link:hover {
+            text-decoration: underline;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 30px;
+            color: #6c757d;
+        }
+
+        .empty-state svg {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
+        footer {
+            padding: 20px;
+            text-align: center;
+            background: #f8f9fa;
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .search-form {
+                flex-direction: column;
+            }
+
+            .form-group {
+                width: 100%;
+            }
+
+            .actions-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .rss-input {
+                width: 100%;
+                min-width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="logo">🐸</div>
+            <h1>Sapo Licitacion</h1>
+            <p>Monitor de Licitaciones Públicas de Chile</p>
+        </header>
+
+        <!-- Alert Messages -->
+        <div th:if="${message}" th:class="'alert alert-' + ${messageType}">
+            <span th:text="${message}"></span>
+        </div>
+
+        <!-- Search Section -->
+        <div class="search-section">
+            <form action="/" method="get" class="search-form">
+                <div class="form-group">
+                    <label for="q">Buscar por texto</label>
+                    <input type="text" 
+                           id="q" 
+                           name="q" 
+                           th:value="${searchQuery}"
+                           placeholder="Ej: computadores, servicios, software...">
+                </div>
+
+                <div class="form-group">
+                    <label for="region">Filtrar por región</label>
+                    <input type="text" 
+                           id="region" 
+                           name="region" 
+                           th:value="${searchRegion}"
+                           placeholder="Ej: Valparaíso, Metropolitana...">
+                </div>
+
+                <div class="form-group">
+                    <label for="sortBy">Ordenar por</label>
+                    <select id="sortBy" 
+                            name="sortBy" 
+                            th:value="${sortBy}"
+                            style="width: 100%; padding: 12px; border: 2px solid #dee2e6; border-radius: 5px; font-size: 1em; background: white; cursor: pointer;">
+                        <option value="close_date" th:selected="${sortBy == null or sortBy == 'close_date'}">Fecha de Cierre (Más lejana primero)</option>
+                        <option value="creation_date" th:selected="${sortBy == 'creation_date'}">Fecha de Creación (Más reciente primero)</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">🔍 Buscar</button>
+                <a href="/" class="btn btn-secondary">🔄 Limpiar</a>
+            </form>
+        </div>
+
+        <!-- Actions Bar -->
+        <div class="actions-bar">
+            <div class="stats">
+                <strong th:text="${totalCount}">0</strong> licitaciones encontradas
+            </div>
+
+            <div class="rss-section">
+                <input type="text" 
+                       class="rss-input" 
+                       th:value="${rssUrl}" 
+                       readonly 
+                       onclick="this.select()">
+                <button class="btn btn-success" 
+                        onclick="copyRssUrl()">
+                    📡 Copiar Link RSS
+                </button>
+            </div>
+
+            <form action="/sync" method="post" style="display: inline;">
+                <!-- CSRF Token for Spring Security -->
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                <button type="submit" class="btn btn-secondary">
+                    🔄 Sincronizar Ahora
+                </button>
+            </form>
+        </div>
+
+        <!-- Table -->
+        <div class="table-container">
+            <div th:if="${#lists.isEmpty(tenders)}" class="empty-state">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                <h2>No se encontraron licitaciones</h2>
+                <p>Intenta con otros términos de búsqueda o ejecuta una sincronización.</p>
+            </div>
+
+            <table th:if="${!#lists.isEmpty(tenders)}">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Licitación</th>
+                        <th>Región</th>
+                        <th>Productos</th>
+                        <th>Fecha Cierre</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="tender : ${tenders}">
+                        <td>
+                            <span class="tender-code" th:text="${tender.codigoExterno}">123456</span>
+                        </td>
+                        <td>
+                            <div class="tender-title" th:text="${tender.nombre}">Nombre Licitación</div>
+                            <div class="tender-desc" th:text="${tender.descripcion}" th:title="${tender.descripcion}">
+                                Descripción de la licitación
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge badge-region" th:text="${tender.region}">Región</span>
+                        </td>
+                        <td>
+                            <span class="badge badge-items" th:text="${#lists.size(tender.items)} + ' ítems'">5 ítems</span>
+                        </td>
+                        <td>
+                            <div class="date" th:text="${#temporals.format(tender.fechaCierre, 'dd/MM/yyyy HH:mm')}">
+                                01/01/2024 12:00
+                            </div>
+                            <div style="font-size: 0.85em; color: #28a745; font-weight: 600; margin-top: 5px;">
+                                <span th:with="diasRestantes=${T(java.time.temporal.ChronoUnit).DAYS.between(T(java.time.LocalDateTime).now(), tender.fechaCierre)}">
+                                    <span th:if="${diasRestantes > 1}" th:text="'⏰ Faltan ' + ${diasRestantes} + ' días'"></span>
+                                    <span th:if="${diasRestantes == 1}" th:text="'⏰ Falta 1 día'"></span>
+                                    <span th:if="${diasRestantes == 0}" th:text="'⏰ Cierra hoy'" style="color: #ffc107;"></span>
+                                    <span th:if="${diasRestantes < 0}" th:text="'⏰ Cerrada'" style="color: #dc3545;"></span>
+                                </span>
+                            </div>
+                        </td>
+                        <td>
+                            <a th:href="'https://www.mercadopublico.cl/Procurement/Modules/RFB/DetailsAcquisition.aspx?idlicitacion=' + ${tender.codigoExterno}" 
+                               target="_blank" 
+                               class="external-link">
+                                Ver Detalle →
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>
+                MercadoPublicoMonitor © 2025 | 
+                Datos obtenidos de <a href="https://www.mercadopublico.cl" target="_blank" style="color: #667eea;">MercadoPublico.cl</a>
+            </p>
+            <p style="margin-top: 5px; font-size: 0.85em;">
+                Sincronización automática cada hora | 
+                Feed RSS compatible con Miniflux
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        function copyRssUrl() {
+            const input = document.querySelector('.rss-input');
+            input.select();
+            document.execCommand('copy');
+            
+            const btn = event.target;
+            const originalText = btn.textContent;
+            btn.textContent = '✓ Copiado!';
+            btn.style.background = '#28a745';
+            
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.style.background = '';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,223 @@
+{
+  "Cantidad": 36,
+  "FechaCreacion": "2025-12-06T21:37:49.4070877Z",
+  "Version": "v1",
+  "Listado": [
+    {
+      "CodigoExterno": "1627-86-LE25",
+      "Nombre": "“SUMINISTRO DE RECARGA Y ARRIENDO DE CILINDROS DE OXÍGENO MEDICINAL PARA EL HOSPITAL DE SAN FERNANDO”",
+      "CodigoEstado": 5,
+      "FechaCierre": "2025-12-18T15:34:00"
+    },
+    {
+      "CodigoExterno": "2422-166-L125",
+      "Nombre": "SOL. ADQ. 944820 ADQ. E INST. FIBRA OPTICA",
+      "CodigoEstado": 5,
+      "FechaCierre": "2025-12-15T19:38:00"
+    },
+    {
+      "CodigoExterno": "2483-273-LE25",
+      "Nombre": "SUMINISTRO DE CONTENEDORES DE RESIDUOS SÓLIDOS DOMICILIARIOS",
+      "CodigoEstado": 5,
+      "FechaCierre": "2025-12-16T15:00:00"
+    },
+    {
+      "CodigoExterno": "2697-42-LP25",
+      "Nombre": "ADQUISICIÓN DE BUS MUNICIPAL",
+      "CodigoEstado": 5,
+      "FechaCierre": "2025-12-17T15:31:00"
+    },
+    {
+      "CodigoExterno": "4284-335-L125",
+      "Nombre": "SERVICIO DE MOVILIZACION HABITABILIDAD 2024",
+      "CodigoEstado": 5,
+      "FechaCierre": "2025-12-12T10:00:00"
+    },
+    {
+      "CodigoExterno": "4284-341-L125",
+      "Nombre": "ADQUISICION ALIMENTOS Y TRANSPORTE PARA DIRIGENTES",
+      "CodigoEstado": 5,
+      "FechaCierre": "2025-12-12T16:30:00"
+    },
+    {
+      "CodigoExterno": "4284-342-L125",
+      "Nombre": "Adquisición de colaciones para usuarios Programa Discapacidad según bases adjuntas numeral 1.2 detalle de bien a licitar",
+      "CodigoEstado": 5,
+      "FechaCierre": "2025-12-12T15:44:00"
+    },
+    {
+      "CodigoExterno": "4284-343-L125",
+      "Nombre": "ALIMENTOS PARA CEREMONIA CIERRE VINCULOS",
+      "CodigoEstado": 5,
+      "FechaCierre": "2025-12-12T16:00:00"
+    },
+    {
+      "CodigoExterno": "4284-344-L125",
+      "Nombre": "Contratación de servicio de producción de evento Taller de talentos juveniles según bases adjuntas numeral 1.2 detalle de bien a licitar",
+      "CodigoEstado": 5,
+      "FechaCierre": "2025-12-12T15:27:00"
+    },
+    {
+      "CodigoExterno": "4284-345-L125",
+      "Nombre": "ADQUISICION MEDALLAS Y GALVANOS OFICINA JUVENTUD",
+      "CodigoEstado": 5,
+      "FechaCierre": "2025-12-12T16:00:00"
+    },
+    {
+      "CodigoExterno": "4284-346-E225",
+      "Nombre": "Adquisición de pendón Mini roller pasacalle tazones cortadores de pastillas entre otros y manteles para promoción del programa adulto mayor según bases adjuntas numeral 1.2 detalle de bien a licitar",
+      "CodigoEstado": 5,
+      "FechaCierre": "2025-12-12T15:17:00"
+    },
+    {
+      "CodigoExterno": "4284-347-LE25",
+      "Nombre": "Adquisición de container unidad Vial según bases adjuntas numeral 1.2 detalle de bien a licitar",
+      "CodigoEstado": 5,
+      "FechaCierre": "2025-12-16T10:01:00"
+    },
+    {
+      "CodigoExterno": "4284-348-E225",
+      "Nombre": "ADQUISICION ALIMENTOS HABITABILIDAD 2024",
+      "CodigoEstado": 5,
+      "FechaCierre": "2025-12-12T16:30:00"
+    },
+    {
+      "CodigoExterno": "4284-349-L125",
+      "Nombre": "MATERIALES DE OFICINA PROGRAMAS DDIF",
+      "CodigoEstado": 5,
+      "FechaCierre": "2025-12-12T16:30:00"
+    },
+    {
+      "CodigoExterno": "4291-126-L125",
+      "Nombre": "Reparación y mantención de cámaras de alcantarillado y eléctricas en Facimar",
+      "CodigoEstado": 5,
+      "FechaCierre": "2025-12-16T15:00:00"
+    },
+    {
+      "CodigoExterno": "557639-106-LE25",
+      "Nombre": "EQUIPAMIENTO TECNOLÓGICO COLEGIOS CORMUN",
+      "CodigoEstado": 5,
+      "FechaCierre": "2025-12-15T15:01:00"
+    },
+    {
+      "CodigoExterno": "564162-137-LE25",
+      "Nombre": "86162 - GRPUA TIPO TIJERA",
+      "CodigoEstado": 5,
+      "FechaCierre": "2025-12-11T10:00:00"
+    },
+    {
+      "CodigoExterno": "5751-39-LP25",
+      "Nombre": "SERVICIOS DE TRASLADO DE AT SERVIU LOS RIOS",
+      "CodigoEstado": 5,
+      "FechaCierre": "2025-12-26T18:47:00"
+    },
+    {
+      "CodigoExterno": "829-9-O125",
+      "Nombre": "REP. CLUB SOCIAL,CULTURAL Y DEPORTIVO BORIES, NATALES",
+      "CodigoEstado": 5,
+      "FechaCierre": "2026-02-17T14:59:00"
+    },
+    {
+      "CodigoExterno": "905-31-LE25",
+      "Nombre": "Servicio Traslado de contenedores y adecuaciones d",
+      "CodigoEstado": 5,
+      "FechaCierre": "2025-12-16T10:00:00"
+    },
+    {
+      "CodigoExterno": "557639-101-CO25",
+      "Nombre": "SERVICIO DE MANT. PREV. Y CORREC. TECHUMBRES",
+      "CodigoEstado": 7,
+      "FechaCierre": "2025-12-06T08:34:15.37"
+    },
+    {
+      "CodigoExterno": "2422-157-LE25",
+      "Nombre": "S.A. 944032 POLERAS MANGA CORTA PARA FUNCIONAMRIOS MUNICIPALES",
+      "CodigoEstado": 15,
+      "FechaCierre": "2025-12-06T13:16:27.77"
+    },
+    {
+      "CodigoExterno": "2422-158-LE25",
+      "Nombre": "S.A.944107 VESTUARIO PARA FUNCIONARIOS MUNICIPALES",
+      "CodigoEstado": 15,
+      "FechaCierre": "2025-12-06T13:20:17.193"
+    },
+    {
+      "CodigoExterno": "4284-280-E225",
+      "Nombre": "Adquisición de equipamiento central de alimentos Eleam Ayen Ruca según bases adjuntas numeral 1.2 detalle de bien a licitar",
+      "CodigoEstado": 7,
+      "FechaCierre": "2025-12-06T14:16:27.93"
+    },
+    {
+      "CodigoExterno": "1051425-78-LP25",
+      "Nombre": "ADQUISICIÓN DE SEMIRREMOLQUE CAMA BAJA PARA LA DRV",
+      "CodigoEstado": 8,
+      "FechaCierre": "2025-11-24T15:00:00"
+    },
+    {
+      "CodigoExterno": "1417913-63-LE25",
+      "Nombre": "CON. SUMINISTROS KITS ANTENAS SATELITALE COMUDESI",
+      "CodigoEstado": 8,
+      "FechaCierre": "2025-10-10T13:30:00"
+    },
+    {
+      "CodigoExterno": "1417913-73-LE25",
+      "Nombre": "SERVICIO DE INTERNET SATELITAL PARA LAS DEPENDENCIAS DE LA CORMUDESI POR 12 MESES",
+      "CodigoEstado": 8,
+      "FechaCierre": "2025-10-16T16:00:00"
+    },
+    {
+      "CodigoExterno": "1480067-18-L125",
+      "Nombre": "PTR S- 195 SERVICIO DE ELECTROCARDIOGRAMA",
+      "CodigoEstado": 8,
+      "FechaCierre": "2025-11-17T15:02:00"
+    },
+    {
+      "CodigoExterno": "1480071-1-L125",
+      "Nombre": "PTR N°S-221 - SERVICIO DE TRABAJO DE PINTURA EN EL COSAM VITACURA",
+      "CodigoEstado": 8,
+      "FechaCierre": "2025-11-26T16:00:00"
+    },
+    {
+      "CodigoExterno": "1480090-2-L125",
+      "Nombre": "PTR N°E-223 - ADQUISICION DE MATERIALES DE ROBOTICA PARA EL COLEGIO ANTARTICA CHILENA",
+      "CodigoEstado": 8,
+      "FechaCierre": "2025-11-21T10:00:00"
+    },
+    {
+      "CodigoExterno": "1506-18-LQ25",
+      "Nombre": "SERVICIO DE SEGUIMIENTO AMBIENTAL EMBALSE ANCOA PROVINCIA DE LINARES 2025-2026",
+      "CodigoEstado": 8,
+      "FechaCierre": "2025-11-06T09:00:00"
+    },
+    {
+      "CodigoExterno": "1627-79-LP25",
+      "Nombre": "SUMINISTRO DE MEDICAMENTO “PROPOFOL AL 1% CON KIT DE ADMINISTRACIÓN Y COMODATO DE EQUIPO DE INFUSIÓN POR JERINGA” PARA LA UNIDAD DE FARMACIA DEL HOSPITAL DE SAN FERNANDO.",
+      "CodigoEstado": 8,
+      "FechaCierre": "2025-11-12T14:24:00"
+    },
+    {
+      "CodigoExterno": "2026-188-LE25",
+      "Nombre": "MONITORES DESFIBRILADORES CON CARRO DE PARO COMPLE",
+      "CodigoEstado": 8,
+      "FechaCierre": "2025-11-17T16:00:00"
+    },
+    {
+      "CodigoExterno": "2026-194-LE25",
+      "Nombre": "ADQUISICIÓN CAMILLAS TRANSPORTA PARA SAR MIRAFLORE",
+      "CodigoEstado": 8,
+      "FechaCierre": "2025-11-24T18:40:00"
+    },
+    {
+      "CodigoExterno": "2483-266-LE25",
+      "Nombre": "ARRIENDO DE BAÑOS QUÍMICOS PARA FERIAS NAVIDEÑAS MUNICIPALES Y COMUNITARIAS 2025",
+      "CodigoEstado": 8,
+      "FechaCierre": "2025-11-06T15:01:00"
+    },
+    {
+      "CodigoExterno": "3595-39-LE25",
+      "Nombre": "Actividad: Aniversario Comuna de Rio Verde 2025",
+      "CodigoEstado": 8,
+      "FechaCierre": "2025-12-03T09:00:00"
+    }
+  ]
+}

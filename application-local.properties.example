@@ -1,0 +1,18 @@
+# Configuración local (copiar a application-local.properties)
+# Este archivo está en .gitignore y no se sube al repositorio
+
+# Database (ajustar según tu configuración local)
+spring.datasource.url=jdbc:postgresql://localhost:5432/licitaciones_db
+spring.datasource.username=postgres
+spring.datasource.password=tu_password_aqui
+
+# API Key de MercadoPublico
+mercadopublico.api.ticket=tu_api_key_aqui
+
+# Logging más verboso para desarrollo
+logging.level.cl.sapo.licitaciones=TRACE
+logging.level.org.springframework.web=DEBUG
+
+# Mostrar queries SQL con parámetros
+spring.jpa.properties.hibernate.show_sql=true
+spring.jpa.properties.hibernate.use_sql_comments=true
