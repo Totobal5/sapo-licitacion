@@ -163,8 +163,8 @@ public class SyncService {
         licitacionRepository.findByCodigoExterno(codigoExterno).ifPresent(licitacion -> {
             // Update with detailed information (keep existing basic data)
             if (detailedDto.comprador() != null) {
-                licitacion.setNombreOrganismo(detailedDto.comprador().nombreOrganismo());
-                licitacion.setRegionOrganismo(detailedDto.comprador().regionUnidad());
+                licitacion.setBuyerName(detailedDto.comprador().nombreUnidad());
+                licitacion.setRegion(detailedDto.comprador().regionUnidad());
             }
             
             if (detailedDto.descripcion() != null && !detailedDto.descripcion().isBlank()) {
@@ -172,11 +172,11 @@ public class SyncService {
             }
             
             if (detailedDto.items() != null && detailedDto.items().listado() != null) {
-                licitacion.setItems(
-                    detailedDto.items().listado().stream()
-                        .map(this::convertToItemEntity)
-                        .collect(Collectors.toList())
-                );
+                // Clear existing items and add new ones
+                licitacion.getItems().clear();
+                detailedDto.items().listado().stream()
+                    .map(itemDto -> mapItemToEntity(itemDto, licitacion))
+                    .forEach(licitacion::addItem);
             }
             
             licitacionRepository.save(licitacion);
