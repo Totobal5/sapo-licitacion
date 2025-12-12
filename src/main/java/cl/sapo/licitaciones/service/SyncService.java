@@ -39,6 +39,8 @@ public class SyncService {
 
     private final RestClient mercadoPublicoRestClient;
     private final LicitacionRepository licitacionRepository;
+    
+    private volatile boolean syncInProgress = false;
 
     @Value("${mercadopublico.api.ticket}")
     private String apiTicket;
@@ -59,6 +61,23 @@ public class SyncService {
     @Scheduled(cron = "0 0 * * * *")
     @Transactional
     public void syncTenders() {
+        if (syncInProgress) {
+            log.warn("Sync already in progress, skipping this execution");
+            return;
+        }
+        
+        syncInProgress = true;
+        try {
+            performSync();
+        } finally {
+            syncInProgress = false;
+        }
+    }
+    
+    /**
+     * Performs the actual synchronization logic.
+     */
+    private void performSync() {
         log.info("Starting tender synchronization...");
 
         try {
@@ -372,12 +391,24 @@ public class SyncService {
         log.info("Manual sync triggered");
         syncTenders();
     }
+    
+    /**
+     * Check if sync is currently in progress.
+     */
+    public boolean isSyncInProgress() {
+        return syncInProgress;
+    }
 
     /**
      * Async manual trigger that doesn't block HTTP requests.
      */
     @Async
     public CompletableFuture<String> triggerSyncAsync() {
+        if (syncInProgress) {
+            log.warn("Sync already in progress, rejecting new sync request");
+            return CompletableFuture.completedFuture("Sync already in progress");
+        }
+        
         log.info("Manual async sync triggered");
         syncTenders();
         return CompletableFuture.completedFuture("Sync completed");

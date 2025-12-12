@@ -86,10 +86,17 @@ public class WebController {
     public String triggerSync(RedirectAttributes redirectAttributes) {
         log.info("Manual async sync triggered via web interface");
 
+        if (syncService.isSyncInProgress()) {
+            redirectAttributes.addFlashAttribute("message", 
+                "Una sincronización ya está en progreso. Por favor espera a que termine (puede tardar 20-30 minutos).");
+            redirectAttributes.addFlashAttribute("messageType", "warning");
+            return "redirect:/";
+        }
+
         try {
             syncService.triggerSyncAsync();
             redirectAttributes.addFlashAttribute("message", 
-                "Sincronización iniciada en segundo plano. Refresca la página en unos minutos.");
+                "Sincronización iniciada. Este proceso puede tardar 20-30 minutos. Refresca la página más tarde.");
             redirectAttributes.addFlashAttribute("messageType", "info");
         } catch (Exception e) {
             log.error("Error during manual sync", e);
