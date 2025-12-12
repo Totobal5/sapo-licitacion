@@ -9,6 +9,7 @@ import cl.sapo.licitaciones.repository.LicitacionRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -44,7 +45,7 @@ public class SyncService {
     
     public SyncService(RestClient mercadoPublicoRestClient, 
                       LicitacionRepository licitacionRepository,
-                      SyncService self) {
+                      @Lazy SyncService self) {
         this.mercadoPublicoRestClient = mercadoPublicoRestClient;
         this.licitacionRepository = licitacionRepository;
         this.self = self;
