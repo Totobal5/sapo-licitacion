@@ -45,7 +45,7 @@ class LicitacionServiceTest {
         licitacionRepository.save(tender);
 
         // When: Searching by text
-        List<Licitacion> results = licitacionService.searchTenders("computadores", null);
+        List<Licitacion> results = licitacionService.searchTenders("computadores", null, null);
 
         // Then: Should find the tender
         assertThat(results).isNotEmpty();
@@ -69,7 +69,7 @@ class LicitacionServiceTest {
         licitacionRepository.save(tender);
 
         // When: Searching by region
-        List<Licitacion> results = licitacionService.searchTenders(null, "Valparaíso");
+        List<Licitacion> results = licitacionService.searchTenders(null, "Valparaíso", null);
 
         // Then: Should find regional tenders
         assertThat(results).isNotEmpty();

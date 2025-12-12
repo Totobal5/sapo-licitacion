@@ -104,6 +104,7 @@ public class LicitacionSpecs {
     public static Specification<Licitacion> searchWithFilters(String query, String region) {
         return Specification.where(searchByText(query))
                 .and(hasRegion(region))
-                .and(hasStatus(5)); // Only published tenders
+                // Only published tenders
+                .and(hasStatus(5));
     }
 }
