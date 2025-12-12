@@ -43,3 +43,7 @@ docker-compose.override.yml
 ### Logs ###
 logs/
 *.log
+
+## Examples
+api_response_1.json
+api_response_2.json

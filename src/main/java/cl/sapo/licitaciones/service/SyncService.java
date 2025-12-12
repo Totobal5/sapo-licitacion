@@ -327,12 +327,17 @@ public class SyncService {
                 .collect(Collectors.toList());
         
         for (Licitacion tender : mappedTenders) {
-            try {
-                licitacionRepository.save(tender); // save() does upsert automatically
-                processedCount++;
-                log.debug("Saved/updated tender: {}", tender.getCodigoExterno());
-            } catch (Exception e) {
-                log.error("Error saving tender {}", tender.getCodigoExterno(), e);
+            if (tender != null) {
+                try {
+                    // save() does upsert automatically
+                    licitacionRepository.save(tender);
+                    processedCount++;
+                    log.debug("Saved/updated tender: {}", tender.getCodigoExterno());
+                } catch (Exception e) {
+                    log.error("Error saving tender {}", tender.getCodigoExterno(), e);
+                }
+            } else {
+                log.warn("Skipped saving null tender entity");
             }
         }
         

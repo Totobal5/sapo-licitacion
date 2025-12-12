@@ -80,7 +80,9 @@ public class LicitacionSpecs {
             );
 
             // Ensure distinct results (because of JOIN)
-            criteriaQuery.distinct(true);
+            if (criteriaQuery != null) {
+                criteriaQuery.distinct(true);
+            }
 
             return finalPredicate;
         };
@@ -102,7 +104,7 @@ public class LicitacionSpecs {
      * Combine multiple specifications with AND logic.
      */
     public static Specification<Licitacion> searchWithFilters(String query, String region) {
-        return Specification.where(searchByText(query))
+        return searchByText(query)
                 .and(hasRegion(region))
                 // Only published tenders
                 .and(hasStatus(5));

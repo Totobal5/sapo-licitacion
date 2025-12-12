@@ -1,7 +1,9 @@
-# Docker ignore file
-# Files and directories to exclude from Docker build context
+# ===========================================
+# Docker Build Context Exclusions
+# ===========================================
+# Exclude unnecessary files to optimize build speed and image size
 
-# Git
+# Version Control
 .git
 .gitignore
 .gitattributes
@@ -9,14 +11,8 @@
 # Documentation
 *.md
 docs/
-ARCHITECTURE.md
-DEPLOYMENT.md
-PROJECT_SUMMARY.md
-USAGE.md
-VERIFICATION.md
-COMMANDS.md
 
-# IDE
+# IDE Configuration
 .idea/
 .vscode/
 *.iml
@@ -27,7 +23,7 @@ COMMANDS.md
 .project
 .metadata
 
-# Build artifacts
+# Build Artifacts (Maven builds inside Docker)
 target/
 build/
 dist/
@@ -39,36 +35,46 @@ logs/
 *.log
 *.log.*
 
-# Database
+# Database Files
 *.db
 *.sql
+database/queries.sql
 
-# Environment files
+# Environment Configuration
 .env
 .env.*
 !.env.example
 application-local.properties
 
-# Docker
+# Docker Files (not needed in build context)
+docker-compose.yml
 docker-compose.override.yml
 *.dockerfile
+Dockerfile
 
-# OS
+# Operating System
 .DS_Store
 Thumbs.db
 *.swp
 *.swo
 *~
 
-# Maven
+# Maven Wrapper (already in image)
 .mvn/wrapper/maven-wrapper.jar
-.m2/
 
-# Test files
+# Test Resources (tests run on host, not in production image)
 src/test/
 *Test.java
 
-# Backup files
+# Temporary Files
 *.bak
 *.tmp
 *.backup
+*.cache
+
+# JSON Response Examples
+api_response_*.json
+
+# Deployment Scripts
+deploy.ps1
+railway.json

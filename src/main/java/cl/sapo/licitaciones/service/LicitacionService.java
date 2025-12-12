@@ -32,6 +32,9 @@ public class LicitacionService {
 
         Specification<Licitacion> spec = LicitacionSpecs.searchWithFilters(query, region);
         Sort sort = getSortOrder(sortBy);
+        if (sort == null) {
+            sort = Sort.unsorted();
+        }
 
         return licitacionRepository.findAll(spec, sort);
     }
@@ -43,6 +46,9 @@ public class LicitacionService {
     public List<Licitacion> getAllTenders(String sortBy) {
         Specification<Licitacion> spec = LicitacionSpecs.hasStatus(5);
         Sort sort = getSortOrder(sortBy);
+        if (sort == null) {
+            sort = Sort.unsorted();
+        }
 
         return licitacionRepository.findAll(spec, sort);
     }
@@ -72,7 +78,7 @@ public class LicitacionService {
      * Get tender by external code.
      */
     @Transactional(readOnly = true)
-    public Optional<Licitacion> getTenderByCode(String codigoExterno) {
+    public Optional<Licitacion> getTenderByCode(@org.springframework.lang.NonNull String codigoExterno) {
         return licitacionRepository.findById(codigoExterno);
     }
 

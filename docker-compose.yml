@@ -1,12 +1,11 @@
 version: '3.8'
 
-# Docker Compose for Portainer Stack Deployment
-# Optimized for Orange Pi ARM64 (On-Premise)
-# Also works on x86_64 architecture
+# Production-ready Docker Compose configuration
+# Compatible with x86_64 and ARM64 architectures (Raspberry Pi, Orange Pi, etc.)
 
 services:
   # ============================================
-  # PostgreSQL Database Service
+  # PostgreSQL Database
   # ============================================
   db:
     image: postgres:16-alpine
@@ -20,14 +19,14 @@ services:
       PGDATA: /var/lib/postgresql/data/pgdata
     
     volumes:
-      # Persistent data volume
+      # Persistent data storage
       - postgres_data:/var/lib/postgresql/data
-      # Init script to enable unaccent extension
+      # Initialize unaccent extension for case-insensitive search
       - ./database/init-extensions.sh:/docker-entrypoint-initdb.d/01-init-extensions.sh:ro
     
     ports:
-      # Expose for external access (optional, comment out for security)
-      - "5432:5432"
+      # Expose port for external access (comment out for production security)
+      - "${DB_PORT:-5432}:5432"
     
     networks:
       - licitaciones-network
@@ -39,7 +38,7 @@ services:
       retries: 5
       start_period: 10s
     
-    # Resource limits (adjust for Orange Pi)
+    # Resource limits (adjust based on your server specs)
     deploy:
       resources:
         limits:
@@ -50,13 +49,12 @@ services:
           memory: 256M
 
   # ============================================
-  # Spring Boot Application Service
+  # Spring Boot Application
   # ============================================
   app:
     build:
       context: .
       dockerfile: Dockerfile
-      # Build arguments
       args:
         - BUILDKIT_INLINE_CACHE=1
     
@@ -68,27 +66,27 @@ services:
         condition: service_healthy
     
     environment:
-      # Spring Boot Configuration
+      # Spring Boot profile
       SPRING_PROFILES_ACTIVE: prod
       SERVER_PORT: 8080
       
-      # Database Configuration (Spring Boot format)
+      # Database connection
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/licitaciones_db
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-postgres}
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
       
-      # JPA Configuration
+      # JPA settings
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_JPA_SHOW_SQL: ${SHOW_SQL:-false}
       
-      # MercadoPublico API Configuration
-      MERCADOPUBLICO_API_TICKET: "${MERCADOPUBLICO_API_TICKET:?Error: MERCADOPUBLICO_API_TICKET is required}"
+      # MercadoPublico API credentials (REQUIRED)
+      MERCADOPUBLICO_API_TICKET: "${MERCADOPUBLICO_API_TICKET:?Error: MERCADOPUBLICO_API_TICKET environment variable is required}"
       
-      # Logging
+      # Logging configuration
       LOGGING_LEVEL_CL_SAPO_LICITACIONES: ${LOG_LEVEL:-INFO}
       LOGGING_LEVEL_ORG_HIBERNATE_SQL: ${SQL_LOG:-WARN}
       
-      # JVM Options
+      # JVM memory settings
       JAVA_OPTS: -Xms256m -Xmx512m -XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0
     
     ports:
@@ -98,13 +96,13 @@ services:
       - licitaciones-network
     
     healthcheck:
-      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8080/ || exit 1"]
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8080/actuator/health || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 60s
     
-    # Resource limits (adjust for Orange Pi)
+    # Resource limits (adjust based on your server specs)
     deploy:
       resources:
         limits:
@@ -114,7 +112,7 @@ services:
           cpus: '1.0'
           memory: 512M
     
-    # Optional: Mount logs volume
+    # Optional: Persist application logs
     volumes:
       - app_logs:/app/logs
 
@@ -127,7 +125,7 @@ networks:
     name: licitaciones-network
 
 # ============================================
-# Volumes (Persistent Storage)
+# Volumes
 # ============================================
 volumes:
   postgres_data:
