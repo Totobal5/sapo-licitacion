@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientResponseException;
@@ -158,13 +159,14 @@ public class SyncService {
     /**
      * Updates an existing tender with detailed information.
      */
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void updateTenderWithDetails(String codigoExterno, LicitacionDTO detailedDto) {
         licitacionRepository.findByCodigoExterno(codigoExterno).ifPresent(licitacion -> {
             // Update with detailed information (keep existing basic data)
             if (detailedDto.comprador() != null) {
                 licitacion.setBuyerName(detailedDto.comprador().nombreUnidad());
                 licitacion.setRegion(detailedDto.comprador().regionUnidad());
+                licitacion.setBuyerRut(detailedDto.comprador().rutUnidad());
             }
             
             if (detailedDto.descripcion() != null && !detailedDto.descripcion().isBlank()) {
@@ -172,8 +174,12 @@ public class SyncService {
             }
             
             if (detailedDto.items() != null && detailedDto.items().listado() != null) {
-                // Clear existing items and add new ones
-                licitacion.getItems().clear();
+                // Force initialization of items collection in this transaction
+                List<ItemLicitacion> currentItems = licitacion.getItems();
+                currentItems.size(); // Force lazy load
+                currentItems.clear();
+                
+                // Add new items
                 detailedDto.items().listado().stream()
                     .map(itemDto -> mapItemToEntity(itemDto, licitacion))
                     .forEach(licitacion::addItem);
