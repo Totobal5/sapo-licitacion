@@ -21,6 +21,7 @@ import org.springframework.web.client.RestClientResponseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
@@ -190,8 +191,9 @@ public class SyncService {
             }
             
             if (detailedDto.items() != null && detailedDto.items().listado() != null) {
-                // Clear existing items (already loaded in this transaction)
-                licitacion.getItems().clear();
+                // Remove existing items properly to avoid foreign key constraint violations
+                // Create a copy to avoid ConcurrentModificationException
+                new ArrayList<>(licitacion.getItems()).forEach(licitacion::removeItem);
                 
                 // Add new items
                 detailedDto.items().listado().stream()
