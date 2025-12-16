@@ -67,9 +67,12 @@ public class SyncService {
     /**
      * Scheduled sync task that runs every hour at minute 0.
      * Fetches tenders from Mercado Publico API and persists them.
+     * 
+     * NOTE: This method is NOT @Transactional because performSync() handles
+     * transactions internally. This prevents StaleStateException when background
+     * enrichment modifies entities in separate transactions.
      */
     @Scheduled(cron = "0 0 * * * *")
-    @Transactional
     public void syncTenders() {
         if (syncInProgress) {
             log.warn("Sync already in progress, skipping this execution");
@@ -395,6 +398,7 @@ public class SyncService {
      * @param detailedTenders Valid detailed tenders to save
      * @return Number of tenders processed
      */
+    @Transactional
     private int processAndSaveTenders(List<LicitacionDTO> basicList, List<LicitacionDTO> detailedTenders) {
         int processedCount = 0;
         
